@@ -1,0 +1,2 @@
+on chat:
+	replace all "&" with "§" in message
