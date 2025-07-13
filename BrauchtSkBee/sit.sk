@@ -1,0 +1,16 @@
+command /sit:
+	trigger:
+		block under player is not air or water or lava
+		set {_n} to nbt compound from "{NoGravity:1b,Small:1,Invisible:1,Invulnerable:1,NoBasePlate:1,DisabledSlots:2039583}"
+		spawn armor stand 1 block under player with nbt {_n}
+		set max health of last spawned armor stand to 0.1
+		make player ride last spawned armor stand
+		set {_e} to last spawned armor stand
+		while player is riding {_e}:
+			wait 1 tick
+		kill {_e}
+		teleport player 1 block above player
+		if {_a} is set:
+			set block 2 blocks under player to air
+		if {_b} is set:
+			set block 3 blocks under player to air
