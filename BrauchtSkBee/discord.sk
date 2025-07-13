@@ -1,0 +1,8 @@
+function discord(player: player):
+	set {_t} to text component from "&3Um unserem &9Discord &3 zu joinen klicke &r[&aHier&r]"
+	add hover event showing "Joine dem Discord" to {_t}
+	add click event to open url "https://discord.gg/DEINEDISCORDINVITE" to {_t}
+	send component {_t} to {_player}
+command /discord:
+	trigger:
+		discord(player)
