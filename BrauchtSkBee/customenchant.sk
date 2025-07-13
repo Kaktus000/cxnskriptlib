@@ -1,5 +1,3 @@
-#skript by XNeedNoName
-
 command /enchantbook <text>:
     permission: op
     trigger:
