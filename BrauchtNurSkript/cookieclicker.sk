@@ -1,0 +1,344 @@
+#braucht functions.sk
+command /deletemycookies:
+	permission: op
+	trigger:
+		delete {cursor::%player's uuid%}
+		set {cursor::%player's uuid%} to 0
+		delete {oma::%player's uuid%}
+		set {oma::%player's uuid%} to 0
+		delete {cookies::%player's uuid%}
+		set {cookies::%player's uuid%} to 0
+		delete {farm::%player's uuid%}
+		set {farm::%player's uuid%} to 0
+		delete {mine::%player's uuid%}
+		set {mine::%player's uuid%} to 0
+		delete {fabric::%player's uuid%}
+		set {fabric::%player's uuid%} to 0
+		delete {bank::%player's uuid%}
+		set {bank::%player's uuid%} to 0
+		delete {tempel::%player's uuid%}
+		set {tempel::%player's uuid%} to 0
+		delete {zauberturm::%player's uuid%}
+		set {zauberturm::%player's uuid%} to 0
+		delete {verschiffung::%player's uuid%}
+		set {verschiffung::%player's uuid%} to 0
+		delete {alchemielabor::%player's uuid%}
+		set {alchemielabor::%player's uuid%} to 0
+		delete {portal::%player's uuid%}
+		set {portal::%player's uuid%} to 0
+		delete {cursorpotions::%player's uuid%}
+		set {cursorpotions::%player's uuid%} to 0
+		delete {zeitmaschine::%player's uuid%}
+		set {zeitmaschine::%player's uuid%} to 0
+		delete {antimateriekondensator::%player's uuid%}
+		set {antimateriekondensator::%player's uuid%} to 0
+
+on join:
+	if {cursor::%player's uuid%} is not set:
+		set {cursor::%player's uuid%} to 0
+	if {oma::%player's uuid%} is not set:
+		set {oma::%player's uuid%} to 0
+	if {cookies::%player's uuid%} is not set:
+		set {cookies::%player's uuid%} to 0
+	if {farm::%player's uuid%} is not set:
+		set {farm::%player's uuid%} to 0
+	if {mine::%player's uuid%} is not set:
+		set {mine::%player's uuid%} to 0
+	if {fabric::%player's uuid%} is not set:
+		set {fabric::%player's uuid%} to 0
+	if {bank::%player's uuid%} is not set:
+		set {bank::%player's uuid%} to 0
+	if {tempel::%player's uuid%} is not set:
+		set {tempel::%player's uuid%} to 0
+	if {zauberturm::%player's uuid%} is not set:
+		set {zauberturm::%player's uuid%} to 0
+	if {verschiffung::%player's uuid%} is not set:
+		set {verschiffung::%player's uuid%} to 0
+	if {alchemielabor::%player's uuid%} is not set:
+		set {alchemielabor::%player's uuid%} to 0
+	if {portal::%player's uuid%} is not set:
+		set {portal::%player's uuid%} to 0
+	if {cursorpotions::%player's uuid%} is not set:
+		set {cursorpotions::%player's uuid%} to 0
+	if {zeitmaschine::%player's uuid%} is not set:
+		set {zeitmaschine::%player's uuid%} to 0
+	if {antimateriekondensator::%player's uuid%} is not set:
+		set {antimateriekondensator::%player's uuid%} to 0
+
+function gettotalcookiesps(player: offlineplayer) :: number:
+	set {_a} to 0
+	add {cursor::%{_player}'s uuid%} * 0.1 to {_a}
+	add {oma::%{_player}'s uuid%} * 1 to {_a}
+	add {farm::%{_player}'s uuid%} * 3 to {_a}	
+	add {mine::%{_player}'s uuid%} * 7 to {_a}
+	add {fabric::%{_player}'s uuid%} * 25 to {_a}
+	add {bank::%{_player}'s uuid%} * 50 to {_a}
+	add {tempel::%{_player}'s uuid%} * 100 to {_a}
+	add {zauberturm::%{_player}'s uuid%} * 200 to {_a}
+	add {verschiffung::%{_player}'s uuid%} * 500 to {_a}
+	add {alchemielabor::%{_player}'s uuid%} * 1000 to {_a}
+	add {portal::%{_player}'s uuid%} * 2000 to {_a}
+	add {zeitmaschine::%{_player}'s uuid%} * 8000 to {_a}
+	add {antimateriekondensator::%{_player}'s uuid%} * 15000 to {_a}
+	return {_a}
+
+function cookieclickermenu1(player: player):
+		open chest inventory with 7 rows named "Cookie Clicker" to {_player}
+		set slot 0 of {_player}'s current inventory to red stained glass pane named "Cursor" with lore "&r&cKosten: 30%nl%&aErtrag Pro Sekunde Pro Stück: 0.1%nl%&6Dein Ertrag pro Sekunde: %format({cursor::%{_player}'s uuid%} * 0.1)%%nl%&bDu hast %format({cursor::%{_player}'s uuid%})%/50"
+		set slot 9 of {_player}'s current inventory to copper ingot named "Oma" with lore "&r&cKosten: 150%nl%&aErtrag Pro Sekunde Pro Stück: 1%nl%&6Dein Ertrag pro Sekunde: %format({oma::%{_player}'s uuid%} * 1)%%nl%&bDu hast %format({oma::%{_player}'s uuid%})%/50"
+		set slot 4 of {_player}'s current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%{_player}'s uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps({_player}))%%nl%&aCookies pro Klick: %format(getcookiesperclick({_player}))%"
+		set slot 18 of {_player}'s current inventory to cactus named "Farm" with lore "&r&cKosten: 1K%nl%&aErtrag Pro Sekunde Pro Stück: 3%nl%&6Dein Ertrag pro Sekunde: %format({farm::%{_player}'s uuid%} * 3)%%nl%&bDu hast %format({farm::%{_player}'s uuid%})%/50"
+		set slot 27 of {_player}'s current inventory to wooden pickaxe named "Mine" with lore "&r&cKosten: 5K%nl%&aErtrag Pro Sekunde Pro Stück: 7%nl%&6Dein Ertrag pro Sekunde: %format({mine::%{_player}'s uuid%} * 7)%%nl%&bDu hast %format({mine::%{_player}'s uuid%})%/50"
+		set slot 36 of {_player}'s current inventory to iron ingot named "Fabrik" with lore "&r&cKosten: 20K%nl%&aErtrag Pro Sekunde Pro Stück: 25%nl%&6Dein Ertrag pro Sekunde: %format({fabric::%{_player}'s uuid%} * 25)%%nl%&bDu hast %format({fabric::%{_player}'s uuid%})%/50"
+		set slot 45 of {_player}'s current inventory to gold ingot named "Bank" with lore "&r&cKosten: 40K%nl%&aErtrag Pro Sekunde Pro Stück: 50%nl%&6Dein Ertrag pro Sekunde: %format({bank::%{_player}'s uuid%} * 50)%%nl%&bDu hast %{bank::%{_player}'s uuid%}%/50"
+		set slot 8 of {_player}'s current inventory to oak door named "Tempel" with lore "&r&cKosten: 200K%nl%&aErtrag Pro Sekunde Pro Stück: 100%nl%&6Dein Ertrag pro Sekunde: %format({tempel::%{_player}'s uuid%} * 100)%%nl%&bDu hast %{tempel::%{_player}'s uuid%}%/50"
+		set slot 17 of {_player}'s current inventory to ender pearl named "Zauberturm" with lore "&r&cKosten: 1M%nl%&aErtrag Pro Sekunde Pro Stück: 200%nl%&6Dein Ertrag pro Sekunde: %format({zauberturm::%{_player}'s uuid%} * 200)%%nl%&bDu hast %{zauberturm::%{_player}'s uuid%}%/50"
+		set slot 26 of {_player}'s current inventory to oak boat named "Verschiffung" with lore "&r&cKosten: 10M%nl%&aErtrag Pro Sekunde Pro Stück: 500%nl%&6Dein Ertrag pro Sekunde: %format({verschiffung::%{_player}'s uuid%} * 500)%%nl%&bDu hast %{verschiffung::%{_player}'s uuid%}%/50"
+		set slot 35 of {_player}'s current inventory to brewing stand named "Alchemielabor" with lore "&r&cKosten: 50M%nl%&aErtrag Pro Sekunde Pro Stück: 1K%nl%&6Dein Ertrag pro Sekunde: %format({alchemielabor::%{_player}'s uuid%} * 1000)%%nl%&bDu hast %{alchemielabor::%{_player}'s uuid%}%/50"
+		set slot 44 of {_player}'s current inventory to end portal frame named "Portal" with lore "&r&cKosten: 100M%nl%&aErtrag Pro Sekunde Pro Stück: 2K%nl%&6Dein Ertrag pro Sekunde: %format({portal::%{_player}'s uuid%} * 2000)%%nl%&bDu hast %{portal::%{_player}'s uuid%}%/50"
+		set slot 31 of {_player}'s current inventory to breeze rod named "Klick Upgrades" with lore "&r&aMehr Cookies Pro Klick"
+		set slot 53 of {_player}'s current inventory to arrow named "&bNächste Seite" with lore "&r&aGehe zur nächsten Seite"
+
+function cookieclickermenu2(player: player):
+	open chest inventory with 6 rows named "Cookie Clicker Seite: 2" to {_player}
+	set slot 4 of {_player}'s current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%{_player}'s uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps({_player}))%%nl%&aCookies pro Klick: %format(getcookiesperclick({_player}))%"
+	set slot 31 of {_player}'s current inventory to breeze rod named "Klick Upgrades" with lore "&r&aMehr Cookies Pro Klick"
+	set slot 45 of {_player}'s current inventory to spectral arrow named "&r&cGehe zur Vorherigen Seite"
+	set slot 0 of {_player}'s current inventory to clock named "Zeitmaschine" with lore "&r&cKosten: 500M%nl%&aErtrag Pro Sekunde Pro Stück: 8K%nl%&6Dein Ertrag pro Sekunde: %format({zeitmaschine::%{_player}'s uuid%} * 8000)%%nl%&bDu hast %{zeitmaschine::%{_player}'s uuid%}%/50"
+	set slot 9 of {_player}'s current inventory to hopper named "Antimateriekondensator" with lore "&r&cKosten: 1B%nl%&aErtrag Pro Sekunde Pro Stück: 15K%nl%&6Dein Ertrag pro Sekunde: %format({antimateriekondensator::%{_player}'s uuid%} * 15000)%%nl%&bDu hast %{antimateriekondensator::%{_player}'s uuid%}%/50"
+function clickupgradeinventory(player: player):
+	open dropper inventory named "Klick Upgrades" to {_player}
+	set slot 1 of {_player}'s current inventory to breeze rod named "Cursor Stab" with lore "&r&cKosten: %format(10 + ({cursorpotions::%{_player}'s uuid%} * (rounded up ({cursorpotions::%{_player}'s uuid%} / 1.5))))%%nl%&6Cookies pro Klick pro Stück: +1%nl%&6Deine Cookies pro Klick: %format({cursorpotions::%{_player}'s uuid%} + 1)%%nl%&bDu hast %format({cursorpotions::%{_player}'s uuid%})%/Infinity"
+	set slot 7 of {_player}'s current inventory to red concrete named "&cZurück zum Normalen Cookieclicker Inventar"
+
+function getcookiesperclick(player: offlineplayer) :: number:
+	set {_a} to 1
+	add {cursorpotions::%{_player}'s uuid%} to {_a}
+	return {_a}
+
+command /cookieclicker:
+	trigger:
+		cookieclickermenu1(player)
+
+on inventory click:
+	if name of event-inventory is "Cookie Clicker Seite: 2":
+		cancel event
+		click action is left mouse button
+		if event-slot is 4:
+			add getcookiesperclick(player) to {cookies::%player's uuid%}
+			set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+		if event-slot is 31:
+			clickupgradeinventory(player)
+		if event-slot is 45:
+			cookieclickermenu1(player)
+		if event-slot is 0:
+			if {cookies::%player's uuid%} > 500000000:
+				if {zeitmaschine::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 500000000
+					add 1 to {zeitmaschine::%player's uuid%}
+					set slot 0 of player's current inventory to clock named "Zeitmaschine" with lore "&r&cKosten: 500M%nl%&aErtrag Pro Sekunde Pro Stück: 8K%nl%&6Dein Ertrag pro Sekunde: %format({zeitmaschine::%player's uuid%} * 8000)%%nl%&bDu hast %{zeitmaschine::%player's uuid%}%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von 50 Zeitmaschinen Erreicht" to player
+		if event-slot is 9:
+			if {cookies::%player's uuid%} > 1000000000:
+				if {antimateriekondensator::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 1000000000
+					add 1 to {antimateriekondensator::%player's uuid%}
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+					set slot 9 of player's current inventory to hopper named "Antimateriekondensator" with lore "&r&cKosten: 1B%nl%&aErtrag Pro Sekunde Pro Stück: 15K%nl%&6Dein Ertrag pro Sekunde: %format({antimateriekondensator::%player's uuid%} * 15000)%%nl%&bDu hast %{antimateriekondensator::%player's uuid%}%/50"
+
+on inventory click:
+	if name of event-inventory is "Klick Upgrades":
+		cancel event
+		click action is left mouse button
+		if event-slot is 1:
+			if {cookies::%player's uuid%} > (10 + ({cursorpotions::%player's uuid%} * (rounded up ({cursorpotions::%player's uuid%} / 1.5)))):
+				set {cookies::%player's uuid%} to ({cookies::%player's uuid%} - (10 + ({cursorpotions::%player's uuid%} * (rounded up ({cursorpotions::%player's uuid%} / 1.5)))))
+				add 1 to {cursorpotions::%player's uuid%}
+				set slot 1 of player's current inventory to breeze rod named "Cursor Stab" with lore "&r&cKosten: %format(10 + ({cursorpotions::%player's uuid%} * (rounded up ({cursorpotions::%player's uuid%} / 1.5))))%%nl%&6Cookies pro Klick pro Stück: +1%nl%&6Deine Cookies pro Klick: %format({cursorpotions::%player's uuid%} + 1)%%nl%&bDu hast %format({cursorpotions::%player's uuid%})%/Infinity"
+		if event-slot is 7:
+			cookieclickermenu1(player)
+
+on inventory click:
+	if name of event-inventory is "Cookie Clicker":
+		cancel event
+		click action is left mouse button
+		if event-slot is 53:
+			cookieclickermenu2(player)
+		if event-slot is 31:
+			clickupgradeinventory(player)
+		if event-slot is 4:
+			add getcookiesperclick(player) to {cookies::%player's uuid%}
+			set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+			
+		if event-slot is 0:
+			if {cookies::%player's uuid%} > 30:
+				if {cursor::%player's uuid%} is not set:
+					set {cursor::%player's uuid%} to 0
+				if {cursor::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 30
+					add 1 to {cursor::%player's uuid%}
+					set slot 0 of player's current inventory to red stained glass pane named "Cursor" with lore "&r&cKosten: 30%nl%&aErtrag Pro Sekunde Pro Stück: 0.1%nl%&6Dein Ertrag pro Sekunde: %format({cursor::%player's uuid%} * 0.1)%%nl%&bDu hast %format({cursor::%player's uuid%})%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von 50 Cursors Erreicht" to player
+					
+		if  event-slot is 9:
+			if {cookies::%player's uuid%} > 150:
+				if {oma::%player's uuid%} is not set:
+					set {oma::%player's uuid%} to 0
+				if {oma::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 150
+					add 1 to {oma::%player's uuid%}
+					set slot 9 of player's current inventory to copper ingot named "Oma" with lore "&r&cKosten: 150%nl%&aErtrag Pro Sekunde Pro Stück: 1%nl%&6Dein Ertrag pro Sekunde: %format({oma::%player's uuid%} * 1)%%nl%&bDu hast %format({oma::%player's uuid%})%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von 50 Omas Erreicht" to player
+
+		if  event-slot is 18:
+			if {cookies::%player's uuid%} > 1000:
+				if {farm::%player's uuid%} is not set:
+					set {farm::%player's uuid%} to 0
+				if {farm::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 1000
+					add 1 to {farm::%player's uuid%}
+					set slot 18 of player's current inventory to cactus named "Farm" with lore "&r&cKosten: 1K%nl%&aErtrag Pro Sekunde Pro Stück: 3%nl%&6Dein Ertrag pro Sekunde: %format({farm::%player's uuid%} * 3)%%nl%&bDu hast %{farm::%player's uuid%}%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von 50 Farms Erreicht" to player
+					
+		if  event-slot is 27:
+			if {cookies::%player's uuid%} > 5000:
+				if {mine::%player's uuid%} is not set:
+					set {mine::%player's uuid%} to 0
+				if {mine::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 5000
+					add 1 to {mine::%player's uuid%}
+					set slot 27 of player's current inventory to wooden pickaxe named "Mine" with lore "&r&cKosten: 5K%nl%&aErtrag Pro Sekunde Pro Stück: 7%nl%&6Dein Ertrag pro Sekunde: %format({mine::%player's uuid%} * 7)%%nl%&bDu hast %{mine::%player's uuid%}%/50"   
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von 50 Mines Erreicht" to player
+	
+		if  event-slot is 36:
+			if {cookies::%player's uuid%} > 20000:
+				if {fabric::%player's uuid%} is not set:
+					set {fabric::%player's uuid%} to 0
+				if {fabric::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 20000
+					add 1 to {fabric::%player's uuid%}
+					set slot 36 of player's current inventory to iron ingot named "Fabrik" with lore "&r&cKosten: 20K%nl%&aErtrag Pro Sekunde Pro Stück: 25%nl%&6 Dein Ertrag pro Sekunde: %format({fabric::%player's uuid%} * 25)%%nl%&bDu hast %{fabric::%player's uuid%}%/50" 
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von %{fabric::%player's uuid%}% Fabriken Erreicht" to player
+					
+		if  event-slot is 45:
+			if {cookies::%player's uuid%} > 40000:
+				if {bank::%player's uuid%} is not set:
+					set {bank::%player's uuid%} to 0
+					
+				if {bank::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 40000
+					add 1 to {bank::%player's uuid%}
+					set slot 45 of player's current inventory to gold ingot named "Bank" with lore "&r&cKosten: 40K%nl%&aErtrag Pro Sekunde Pro Stück: 50%nl%&6Dein Ertrag pro Sekunde: %format({bank::%player's uuid%} * 50)%%nl%&bDu hast %{bank::%player's uuid%}%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von %{bank::%player's uuid%}% Banken Erreicht" to player
+		
+		if  event-slot is 8:
+			if {cookies::%player's uuid%} > 200000:
+				if {tempel::%player's uuid%} is not set:
+					set {tempel::%player's uuid%} to 0
+					
+				if {tempel::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 200000
+					add 1 to {tempel::%player's uuid%}
+					set slot 8 of player's current inventory to oak door named "Tempel" with lore "&r&cKosten: 200K%nl%&aErtrag Pro Sekunde Pro Stück: 100%nl%&6Dein Ertrag pro Sekunde: %format({tempel::%player's uuid%} * 100)%%nl%&bDu hast %{tempel::%player's uuid%}%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von %{tempel::%player's uuid%}% Tempeln Erreicht" to player
+		if  event-slot is 17:
+			if {cookies::%player's uuid%} > 1000000:
+				if {zauberturm::%player's uuid%} is not set:
+					set {zauberturm::%player's uuid%} to 0
+				
+				if {zauberturm::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 1000000
+					add 1 to {zauberturm::%player's uuid%}
+					set slot 17 of player's current inventory to ender pearl named "Zauberturm" with lore "&r&cKosten: 1M%nl%&aErtrag Pro Sekunde Pro Stück: 200%nl%&6Dein Ertrag pro Sekunde: %format({zauberturm::%player's uuid%} * 200)%%nl%&bDu hast %{zauberturm::%player's uuid%}%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von %{zauberturm::%player's uuid%}% Zaubertürmen Erreicht" to player
+		if  event-slot is 26:
+			if {cookies::%player's uuid%} > 10000000:
+				if {verschiffung::%player's uuid%} is not set:
+					set {verschiffung::%player's uuid%} to 0
+				
+				if {verschiffung::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 10000000
+					add 1 to {verschiffung::%player's uuid%}
+					set slot 26 of player's current inventory to oak boat named "Verschiffung" with lore "&r&cKosten: 10M%nl%&aErtrag Pro Sekunde Pro Stück: 500%nl%&6Dein Ertrag pro Sekunde: %format({verschiffung::%player's uuid%} * 500)%%nl%&bDu hast %{verschiffung::%player's uuid%}%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von %{verschiffung::%player's uuid%}% Verschiffungen Erreicht" to player
+		
+		if  event-slot is 35:
+			if {cookies::%player's uuid%} > 50000000:
+				if {alchemielabor::%player's uuid%} is not set:
+					set {alchemielabor::%player's uuid%} to 0
+				
+				if {alchemielabor::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 50000000
+					add 1 to {alchemielabor::%player's uuid%}
+					set slot 35 of player's current inventory to brewing stand named "Alchemielabor" with lore "&r&cKosten: 50M%nl%&aErtrag Pro Sekunde Pro Stück: 1K%nl%&6Dein Ertrag pro Sekunde: %format({alchemielabor::%player's uuid%} * 1000)%%nl%&bDu hast %{alchemielabor::%player's uuid%}%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von %{alchemielabor::%player's uuid%}% Alchemielaboren Erreicht" to player
+
+		if event-slot is 44:
+			if {cookies::%player's uuid%} > 100000000:
+				if {portal::%player's uuid%} is not set:
+					set {portal::%player's uuid%} to 0
+
+				if {portal::%player's uuid%} < 50:
+					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - 100000000
+					add 1 to {portal::%player's uuid%}
+					set slot 44 of player's current inventory to end portal frame named "Portal" with lore "&r&cKosten: 100M%nl%&aErtrag Pro Sekunde Pro Stück: 2K%nl%&6Dein Ertrag pro Sekunde: %format({portal::%player's uuid%} * 2000)%%nl%&bDu hast %{portal::%player's uuid%}%/50"
+					set slot 4 of player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(player))%"
+				else:
+					send "&cDu hast Schon das Maximum von %{portal::%player's uuid%}% Portalen Erreicht" to player
+
+every second:
+	loop all players:
+		add {cursor::%loop-player's uuid%} * 0.1 to {cookies::%loop-player's uuid%}
+		add {oma::%loop-player's uuid%} * 1 to {cookies::%loop-player's uuid%}
+		add {farm::%loop-player's uuid%} * 3 to {cookies::%loop-player's uuid%}   
+		add {mine::%loop-player's uuid%} * 7 to {cookies::%loop-player's uuid%}
+		add {fabric::%loop-player's uuid%} * 25 to {cookies::%loop-player's uuid%}
+		add {bank::%loop-player's uuid%} * 50 to {cookies::%loop-player's uuid%}
+		add {tempel::%loop-player's uuid%} * 100 to {cookies::%loop-player's uuid%}
+		add {zauberturm::%loop-player's uuid%} * 200 to {cookies::%loop-player's uuid%}
+		add {verschiffung::%loop-player's uuid%} * 500 to {cookies::%loop-player's uuid%}
+		add {alchemielabor::%loop-player's uuid%} * 1000 to {cookies::%loop-player's uuid%}
+		add {portal::%loop-player's uuid%} * 2000 to {cookies::%loop-player's uuid%}
+		add {zeitmaschine::%loop-player's uuid%} * 8000 to {cookies::%loop-player's uuid%}
+		add {antimateriekondensator::%loop-player's uuid%} * 15000 to {cookies::%loop-player's uuid%}
+		if name of loop-player's current inventory is "Cookie Clicker":
+			set slot 4 of loop-player's current inventory to cookie named "Cookie" with lore "&r&6Deine Cookies: %format({cookies::%loop-player's uuid%})%%nl%&bCookies Pro Sekunde: &b%format(gettotalcookiesps(loop-player))%%nl%&aCookies pro Klick: %format(getcookiesperclick(loop-player))%"
+
+#OPTIONAL nur mit währung
+#command /tradecookies [<number>]:
+#	trigger:
+#		if arg-1 is not set:
+#			send "Hier Kannst du deine Cookies in Währung umtauschen. 3 Währung für 150k Cookies. Nutze es mit /tradecookies <zahl der cookies>"
+#		else:
+#			if {cookies::%player's uuid%} >= arg-1:
+#				if {cookies::%player's uuid%} >= 25000:
+#					send "&aDie Transaktion Startet (%format(arg-1)% Cookies gegen %format((arg-1 / 150000) * 3)% Währung)"
+#					set {cookies::%player's uuid%} to {cookies::%player's uuid%} - arg-1
+#					add ((arg-1 / 150000) * 3) to {währung::%player's uuid%}
+#					send "&aTransaktion Abgeschlossen" to player
+#				else:
+#					send "&cDu kannst keine Summen unter 25K Umtauschen." to player
+#			else:
+#				send "&cDu hast keine %format(arg-1)% Cookies" to player 
