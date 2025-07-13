@@ -1,0 +1,221 @@
+function checkbad(response: text) :: text:
+	loop {bannedwords::*}:
+		if simplify("%{_response}%") starts with "%simplify(loop-value)% ":
+			set {_banned} to "true"
+			exit 1 loop
+		else if simplify("%{_response}%") contains " %simplify(loop-value)% ":
+			set {_banned} to "true"
+			exit 1 loop
+		else if simplify("%{_response}%") ends with " %simplify(loop-value)%":
+			set {_banned} to "true"
+			exit 1 loop
+		else if simplify("%{_response}%") contains simplify("%loop-value%"):
+			if length of simplify("%{_response}%") is length of simplify("%loop-value%"):
+				set {_banned} to "true"
+				exit 1 loop
+		else if simplify("%{_response}%") is "" or " ":
+			set {_banned} to "true"
+			exit 1 loop
+	if {_banned} is not set:
+		return "false"
+	else:
+		return {_banned}
+
+command /reportwort <text>:
+	trigger:
+		if {reports::*} does not contain arg-1:
+			if {bannedwords::*} does not contain arg-1:
+				add arg-1 to {reports::*}
+				send "Report Gesendet" to player
+				set {reportedby::%arg-1%} to player
+				add 1 to {reportedwords::%player's uuid%}
+				stop
+			else:
+				send "Das wort wurde bereits Gebannt" to player
+				stop
+		else:
+			send "Das Wort wurde bereits Reported und wird demnächst eingesehen." to player
+
+command /banword <text>:
+	permission: skript.admin
+	trigger:
+		if {bannedwords::*} does not contain arg-1:
+			add arg-1 to {bannedwords::*}
+			if {reports::*} contains arg-1:
+				remove arg-1 from {reports::*}
+			if {allearned::*} contains arg-1:
+				remove arg-1 from {allearned::*}
+			send "Wort wurde gebannt" to player
+			if {reportedby::%arg-1%} is set:
+				add 1 to {wordsbanned::%{reportedby::%arg-1%}'s uuid%}
+				delete {reportedby::%arg-1%}
+		else:
+			send "Wort ist schon gebannt" to player
+on inventory click:
+	if name of event-inventory is "Reports":
+		cancel event
+		remove name of clicked slot from {reports::*}
+		set {_a} to 0
+		open chest inventory named "Reports" to player
+		loop {reports::*}:
+			if {_a} > 29:
+				stop
+			set slot {_a} of player's current inventory to paper named "%loop-value%" with lore "Remove Report"
+			add 1 to {_a}
+command /reviewreports:
+	permission: skript.admin
+	trigger:
+		open chest inventory named "Reports" to player
+		set {_a} to 0
+		loop {reports::*}:
+			if {_a} > 29:
+				stop
+			set slot {_a} of player's current inventory to paper named "%loop-value%" with lore "Remove Report"
+			add 1 to {_a}
+function simplify(text: text) :: text:
+	set {_text} to "§§§§§1%{_text}%§§§§§1"
+	while {_text} contains "§§§§§1 ":
+		replace all "§§§§§1 " with "" in {_text}
+		set {_text} to "§§§§§1%{_text}%"
+	while {_text} contains "§§§§§1 ":
+		replace all " §§§§§1" with "" in {_text}
+		set {_text} to "%{_text}%§§§§§1"
+	replace all "§§§§§1" with "" in {_text}
+	set {_text} to "§§§§§1%{_text}%"
+	replace all "§§§§§1#" with "" in {_text}
+	replace all "§§§§§1" with "" in {_text}
+	while {_text} contains "  ":
+		replace all "  " with " " in {_text}  # Doppelte Leerzeichen durch einfache ersetzen
+	set {_text} to lowercase {_text}  # In Kleinbuchstaben umwandeln
+	replace all "." and "!" and "?" and "," and ":" and ";" and "'" and "§§§§§1" with "" in {_text}  # Satzzeichen entfernen
+	return {_text}
+on leave:
+	delete {isaidbefore::%player's uuid%}
+
+on chat:
+	if message starts with "#":
+		set {_a8sdhpfuasdfhuisahf} to 0
+	else:
+		if player has permission "skript.booster":
+			replace all "&" in message with "§" 
+		stop
+	cancel event
+	set message to "§§§§§1%message%"
+	replace all "§§§§§1#" with "" in message
+	replace all "§§§§§1" with "" in message
+	replace all "§§§§§1" with "" in message
+	if simplify(message) is "" or " ":
+		send "&cBitte sende eine Echte Nachricht" to player
+		stop
+	cancel event# Verhindert die Standard-Chat-Ausgabe
+	set {_msg} to message
+	set {_simplifiedMsg} to simplify("%{_msg}%")
+	loop {bannedwords::*}:
+		if simplify(message) starts with "%simplify(loop-value)% ":
+			send "&cDu hast das gebannte Wort: %loop-value% verwendet die Nachricht wird nicht versendet" to player
+			stop
+		else if simplify(message) contains " %simplify(loop-value)% ":
+			send "&cDu hast das gebannte Wort: %loop-value% verwendet die Nachricht wird nicht versendet" to player
+			stop
+		else if simplify(message) ends with " %simplify(loop-value)%":
+			send "&cDu hast das gebannte Wort: %loop-value% verwendet die Nachricht wird nicht versendet" to player
+			stop
+		else if simplify(message) contains simplify(loop-value):
+			if length of simplify(message) is length of simplify("%loop-value%"):
+				send "&cDu hast das gebannte Wort: %loop-value% verwendet die Nachricht wird nicht versendet" to player
+				stop
+	send "&8[&aDu&8] &7- %message%" to player
+	set {_playerUUID} to player's uuid
+	if {gelerntes::*} is not set:
+		set {gelerntes::hi::*} to "Hallo" and "Hi"
+	if {allearned::*} is not set:
+		set {allearned::*} to "Hallo" and "Hi"
+	set {_previousMsg} to simplify("%{isaidbefore::%{_playerUUID}%}%")
+	if {_previousMsg} is set:
+		set {_previousMsg} to simplify("%{_previousMsg}%")
+		set {_existingResponses::*} to {gelerntes::%{_previousMsg}%::*}
+		add {_msg} to {gelerntes::%{_previousMsg}%::*}
+		if {_existingResponses::*} is not set:
+			set {gelerntes::%{_previousMsg}%::*} to {_msg}
+	set {_counter} to 0
+	while {_badcheck} is not set:
+		if {gelerntes::%{_simplifiedMsg}%::*} is set:
+			set {_responses::*} to {gelerntes::%{_simplifiedMsg}%::*}
+			set {_response} to random element out of {_responses::*}
+			if checkbad("%{_response}%") is "false":
+				set {_badcheck} to "checked"
+				exit 1 loop
+			else:
+				remove {_response} from {_responses::*}
+				remove {_response} from {gelerntes::%{_simplifiedMsg}%::*}
+			add 1 to {_counter}
+			if {_counter} is 3:
+				wait 1 tick
+				set {_counter} to 0
+		else:
+			set {_learnedWords::*} to {allearned::*}
+			loop {_learnedWords::*}:
+				set {_score} to 0
+				set {_learnedPhrase} to simplify("%loop-value%")
+				set {_learnedWordsInPhrase::*} to {_learnedPhrase} split at " "
+				loop {_learnedWordsInPhrase::*}:
+					if {_simplifiedMsg} contains loop-value-2:
+						add 1 to {_score}
+				set {_scores::%loop-value%} to {_score}
+			set {_highestScore} to 0
+			while {_approved} is not set:
+				set {_bestMatch} to random element out of {allearned::*}
+				if checkbad("%{_bestMatch}%") is "false":
+					set {_approved} to "checked"
+					exit 1 loop
+				else:
+					remove {_bestMatch} from {allearned::*}
+				add 1 to {_counter}
+				if {_counter} is 3:
+					wait 1 tick
+					set {_counter} to 0
+			loop {_scores::*}:
+				if loop-value > {_highestScore}:
+					if checkbad(loop-index) is "false":
+						set {_highestScore} to loop-value
+						set {_bestMatch} to loop-index
+					else:
+						remove {_bestMatch} from {allearned::*}
+			set {_response} to {_bestMatch}
+			exit 1 loop
+	send "&8[&bChatbot&8]&7 - %{_response}%" to player
+	set {isaidbefore::%{_playerUUID}%} to {_response}
+	if {allearned::*} does not contain {_msg}:
+		add {_msg} to {allearned::*}
+	add 1 to {saidthings::%player's uuid%}
+on tab complete of "/banword":
+	set tab completions for position 1 to {reports::*}
+on tab complete of "/unbanword":
+	set tab completions for position 1 to {bannedwords::*}
+
+on join:
+	if {saidthings::%player's uuid%} is not set:
+		set {saidthings::%player's uuid%} to 0
+	if {wordsbanned::%player's uuid%} is not set:
+		set {wordsbanned::%player's uuid%} to 0
+	if {reportedwords::%player's uuid%} is not set:
+		set {reportedwords::%player's uuid%} to 0
+	if {stickfightkills::%player's uuid%} is not set:
+		set {stickfightkills::%player's uuid%} to 0
+	if {stickfightdeaths::%player's uuid%} is not set:
+		set {stickfightdeaths::%player's uuid%} to 0
+
+
+on join:
+	if {allplayernames::%player's uuid%} is not set:
+		set {allplayernames::%player's uuid%} to player's name
+
+command /unbanword <text>:
+	permission: skript.admin
+	trigger:
+		if {bannedwords::*} does not contain arg-1:
+			send "Wort ist nicht gebannt" to player
+		else:
+			send "Wort wird entbannt." to player
+			remove arg-1 from {bannedwords::*}
+			add arg-1 to {allearned::*}
