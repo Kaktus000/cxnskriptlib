@@ -1,0 +1,16 @@
+function format(number: number) :: text:
+	if {_number} >= 1000000000000000000:
+		set {_result} to "%{_number}/ 1000000000000000000% E"
+	else if {_number} >= 1000000000000000:
+		set {_result} to "%{_number}/ 1000000000000000% P"
+	else if {_number} >= 1000000000000:
+		set {_result} to "%{_number}/ 1000000000000% T"
+	else if {_number} >= 1000000000:
+		set {_result} to "%{_number}/ 1000000000% B"
+	else if {_number} >= 1000000:
+		set {_result} to "%{_number}/ 1000000% M"
+	else if {_number} >= 1000:
+		set {_result} to "%{_number}/ 1000% K"
+	else:
+		set {_result} to "%{_number}%"
+	return {_result}
