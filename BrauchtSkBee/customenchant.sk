@@ -1,0 +1,107 @@
+#skript by XNeedNoName
+
+command /enchantbook <text>:
+    permission: op
+    trigger:
+        if arg-1 is "Arrow":
+            give player enchanted book with lore "&1Arrow"
+        if arg-1 is "Autosmelt":
+            give player enchanted book with lore "&2Autosmelt"
+        if arg-1 is "Timber":
+            give player enchanted book with lore "&3Timber"
+
+
+on anvil prepare:
+    if slot 0 of event-inventory is wooden sword or stone sword or iron sword or diamond sword or netherite sword:
+        if slot 1 of event-inventory is an enchanted book:
+            if lore of slot 1 of event-inventory contains "&1Arrow":
+                set {_i} to slot 0 of event-inventory
+                if lore of {_i} contains "&1Arrow":
+                    stop
+                add "&1Arrow" to the lore of {_i}
+                set event-slot to {_i}
+                set repair cost of event-inventory to 15
+                
+on anvil prepare:
+    if slot 0 of event-inventory is wooden axe or stone axe or iron axe or diamond axe or netherite axe:
+        if slot 1 of event-inventory is an enchanted book:
+            if lore of slot 1 of event-inventory contains "&3Timber":
+                set {_i} to slot 0 of event-inventory
+                if lore of {_i} contains "&3Timber":
+                    stop
+                add "&3Timber" to the lore of {_i}
+                set event-slot to {_i}
+                set repair cost of event-inventory to 15
+                
+                
+on anvil prepare:
+    if slot 0 of event-inventory is wooden pickaxe or stone pickaxe or iron pickaxe or diamond pickaxe or netherite pickaxe or wooden shovel or stone shovel or iron shovel or diamond shovel or netherite shovel:
+        if slot 1 of event-inventory is an enchanted book:
+            if lore of slot 1 of event-inventory contains "&2Autosmelt":
+                set {_i} to slot 0 of event-inventory
+                if lore of {_i} contains "&2Autosmelt":
+                    stop
+                add "&2Autosmelt" to the lore of {_i}
+                set event-slot to {_i}
+                set repair cost of event-inventory to 15
+ 
+
+
+on tab complete for "/enchantbook":
+    set tab completions for position 1 to "Arrow" and "Autosmelt" and "Timber"
+
+on right click:
+    if lore of player's tool contains "&1Arrow": 
+        if player's tool is not enchanted book:
+        
+            set {_ender::%player's uuid%} to difference between {wthrown::%player's uuid%} and now
+            if {_ender::%player's uuid%} < 3 seconds:
+                cancel event
+                stop
+            shoot arrow
+            set item cooldown of player's tool for player to 1 minute
+            set {wthrown::%player's uuid%} to now
+
+on mine:
+	if lore of player's tool contains "&2Autosmelt":
+		if player's tool is not enchanted book:
+			cancel drops
+			set {_amount} to item amount of (first element of (drops of event-block using player's tool))
+				
+			if event-block is iron ore or deepslate iron ore:
+				drop {_amount} of iron ingot at event-location
+			else if event-block is gold ore or deepslate gold ore:
+				drop {_amount} of gold ingot at event-location
+			else if event-block is stone or cobblestone:
+				drop {_amount} of stone at event-location
+			else if event-block is ancient debris:
+				drop {_amount} of netherite scrap at event-location
+			else if event-block is copper ore or deepslate copper ore:
+				drop {_amount} of copper ingot at event-location
+			else if event-block is sand:
+				drop {_amount} of glass at event-location
+			else:
+				drop drops of event-block using player's tool at event-location
+
+ 
+        
+        
+        
+on break of Oak log or Birch log or Spruce log or Dark Oak log or Acacia log or Jungle log or Cherry log:
+    if "%lore of player's tool%" contains "&3Timber":
+        loop blocks upwards:
+            if loop-block is Oak log or Birch log or Spruce log or Dark Oak log or Acacia log or Jungle log or Cherry log:
+                drop the loop-block-1 at event-block
+                set the loop-block to air
+                loop blocks in radius 4 around loop-block:
+                    if loop-block-2 is Oak log or Birch log or Spruce log or Dark Oak log or Acacia log or Jungle log or Cherry log:
+                        drop the loop-block-2 at event-block
+                        set the loop-block-2 to air 
+        loop blocks below:
+            if loop-block is Oak log or Birch log or Spruce log or Dark Oak log or Acacia log or Jungle log:
+                drop the loop-block-1 at event-block
+                set the loop-block to air
+                loop blocks in radius 4 around loop-block:
+                    if loop-block-2 is Oak log or Birch log or Spruce log or Dark Oak log or Acacia log or Jungle log or Cherry log:
+                        drop the loop-block-2 at event-block
+                        set the loop-block-2 to air     
