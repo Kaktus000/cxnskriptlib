@@ -1,0 +1,23 @@
+command /afk:
+	trigger:
+		if {afk::%player's uuid%} >= 100:
+			broadcast "&8%player's name% ist nun nicht mehr AFK"
+			set {afk::%player's uuid%} to 0
+			stop
+		broadcast "&8%player's name% ist nun AFK"
+		set {afk::%player's uuid%} to 100
+on chat:
+	if {afk::%player's uuid%} >= 100:
+		broadcast "&8%player's name% ist nun nicht mehr AFK"
+	set {afk::%player's uuid%} to 0
+    
+on player move:
+	if {afk::%player's uuid%} >= 100:
+		broadcast "&8%player's name% ist nun nicht mehr AFK"
+	set {afk::%player's uuid%} to 0
+    
+every second:
+	loop all players:
+		add 1 to {afk::%loop-player's uuid%}
+    if {afk::%loop-player's uuid%} = 100:
+      broadcast "&8%loop-player's name% ist nun AFK"
