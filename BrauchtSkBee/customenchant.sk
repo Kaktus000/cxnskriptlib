@@ -51,16 +51,13 @@ on tab complete for "/enchantbook":
     set tab completions for position 1 to "Arrow" and "Autosmelt" and "Timber"
 
 on right click:
-    if lore of player's tool contains "&1Arrow": 
-        if player's tool is not enchanted book:
-            set {_difference::%player's uuid%} to difference between {thrown::%player's uuid%} and now
-            if {_difference::%player's uuid%} < 5 seconds:
-                cancel event
-                stop
-            shoot arrow
-            set item cooldown of player's tool for player to 5 seconds
-            set {thrown::%player's uuid%} to now
-
+	if lore of player's tool contains "&1Arrow": 
+		if player's tool is not enchanted book:
+			if player has player's tool on cooldown:
+				cancel event
+				stop
+			shoot arrow
+			set item cooldown of player's tool for player to 5 seconds
 on mine:
 	if lore of player's tool contains "&2Autosmelt":
 		if player's tool is not enchanted book:
