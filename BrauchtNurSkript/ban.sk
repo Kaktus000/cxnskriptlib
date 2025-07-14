@@ -1,0 +1,3 @@
+on command "/ban":
+	cancel event
+	ban arg-1 because of "%arg-2% Wenn du einen Entbannungsantrag stellen willst joine dem Discord unter https://discord.gg/DEINDISCORD"
