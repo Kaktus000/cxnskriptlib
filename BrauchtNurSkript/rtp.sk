@@ -1,0 +1,42 @@
+command /rtp:
+	permission: rtp.use
+	trigger:
+		send "&aTeleport wird Vorbereitet to player"
+		while {_tploc} is not set:
+			event-world is "Farmwelt" or "Farmwelt_End" or "Farmwelt_Nether"
+			set {_x} to round(random number between -10000 and 10000)
+			set {_z} to round(random number between -10000 and 10000)
+			set {_b} to location of highest solid block at location ({_x},0,{_z}) in world event-world
+			if block at {_b} is not air or void:
+				{_b} is set
+				block at locaion 1 block above {_b} is air
+				block at locaion 2 blocks above {_b} is air
+				teleport player to block at location of {_b}
+				exit 1 loop
+				set {_tploc} to true
+			wait 1 tick
+command /farmwelt:
+	aliases: farmworld
+	permission: rtp.gui
+	trigger:
+		event-world is "Citybuild" or "Farmwelt" or "Farmwelt_End" or "Farmwelt_Nether"
+		open dropper inventory named "&rFarmwelt" to player
+		set slot 3 of player's current inventory to grass block named "&aOverworld"
+		set slot 4 of player's current inventory to netherack named "&cNether" 
+		set slot 5 of player's current inventory to endstone named "&eEnd"
+on inventory click:
+	if name of event-inventory is "&rFarmwelt":
+		if clicked slot is 3:
+			send "&aTeleport wird Vorbereitet to player"
+			while {_tploc} is not set:
+				event-world is "Farmwelt" or "Farmwelt_End" or "Farmwelt_Nether"
+				set {_x} to round(random number between -10000 and 10000)
+				set {_z} to round(random number between -10000 and 10000)
+				set {_b} to location of highest solid block at location ({_x},0,{_z}) in world event-world
+				if block at {_b} is not air or void:
+					{_b} is set
+					block at locaion 1 block above {_b} is air
+					block at locaion 2 blocks above {_b} is air
+					teleport player to block at location of {_b}
+					exit 1 loop
+					set {_tploc} to true
