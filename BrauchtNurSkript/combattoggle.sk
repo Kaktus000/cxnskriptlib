@@ -1,0 +1,15 @@
+command /combat:
+    trigger:
+        if {combat::%player's uuid%} is true:
+            delete {combat::%player's uuid%}
+            stop
+        set {combat::%player's uuid%} to true
+
+on damage:
+    attacker is player
+    victim is player
+    if {combat::%victim's uuid%} is true:
+        cancel event
+        send "&cDu kannst %victim's name% nicht fighten da er es ausgestellt hat" to attacker
+    if {combat::%attacker's uuid%} is true:
+        cancel event
