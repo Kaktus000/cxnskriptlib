@@ -1,3 +1,5 @@
+#skript by XNeedNoName
+
 command /enchantbook <text>:
     permission: op
     trigger:
@@ -51,14 +53,13 @@ on tab complete for "/enchantbook":
 on right click:
     if lore of player's tool contains "&1Arrow": 
         if player's tool is not enchanted book:
-        
-            set {_ender::%player's uuid%} to difference between {wthrown::%player's uuid%} and now
-            if {_ender::%player's uuid%} < 3 seconds:
+            set {_difference::%player's uuid%} to difference between {thrown::%player's uuid%} and now
+            if {_difference::%player's uuid%} < 5 seconds:
                 cancel event
                 stop
             shoot arrow
-            set item cooldown of player's tool for player to 1 minute
-            set {wthrown::%player's uuid%} to now
+            set item cooldown of player's tool for player to 5 seconds
+            set {thrown::%player's uuid%} to now
 
 on mine:
 	if lore of player's tool contains "&2Autosmelt":
