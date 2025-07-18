@@ -1,0 +1,9 @@
+command /discordsay <text> <text>:
+	permission: op
+	trigger:
+		broadcast "&7[&9Discord&7] &9%arg-1% &7-&r %arg-2%"
+
+on join:
+	send "[Chat] %player's name% hat den Realm betreten" to console
+on leave:
+	send "[Chat] %player's name% hat den Realm verlassen" to console
