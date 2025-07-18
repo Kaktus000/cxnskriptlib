@@ -1,3 +1,4 @@
+#Braucht discordbot.sk was nur Skript braucht
 import discord
 from discord.ext import commands, tasks
 import websocket
