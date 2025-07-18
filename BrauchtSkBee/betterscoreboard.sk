@@ -1,0 +1,39 @@
+#NUR EIN EXAMPLE FÜGE EIGENES ZEUG EIN
+every tick:
+	loop all players:
+		if {scoreboardon::%loop-player's uuid%} is not set:
+			scoreboard(loop-player)
+function scoreboard(player: player):
+	toggle {_player}'s fastboard on
+	if {_player}'s world is "Lobby":
+		set {_player}'s food level to 10
+	set title of {_player}'s fastboard to "Realmname"
+	set line 3 of {_player}'s fastboard to "Dein Name&a:&r &e%{_player}'s name%"
+	set line 4 of {_player}'s fastboard to ""
+	if {_c} contains "citybuild":
+		set line 8 of {_player}'s fastboard to "LOL"
+		set line 9 of {_player}'s fastboard to "%{variable}%"
+		delete line 10 of {_player}'s fastboard
+		delete line 11 of {_player}'s fastboard
+		delete line 12 of {_player}'s fastboard
+	else:
+		set line 7 of {_player}'s fastboard to "LOBBBBBY"
+	set {_player}'s tablist header to "%nl%Realmname"
+	set {_player}'s tablist footer to "%nl%&aSpieler Online: &e%online player count%%nl%&aViel Spaß auf Realmname."
+command /ping:
+	trigger:
+		send "&8[&aPing&8]&7 Dein Ping:&a %player's ping%ms"
+command /scoreboard <text>:
+	trigger:
+		if arg-1 is "on":
+			delete {scoreboardon::%player's uuid%}
+			send "&8[&aScoreboard&8]&7 - &aDas Scoreboard wird nun gezeigt" to player
+			toggle player's fastboard on
+		else if arg-1 is "off":
+			set {scoreboardon::%player's uuid%} to "False"
+			send "&8[&aScoreboard&8]&7 - &cDas Scoreboard wird nun nicht mehr gezeigt" to player
+			toggle player's fastboard off
+		else:
+			send "&8[&aScoreboard&8]&7 - &cKein gültiges Argument" to player
+on tab complete for "/scoreboard":
+	set tab completions for position 1 to "on" and "off"
