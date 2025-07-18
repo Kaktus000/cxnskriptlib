@@ -1,0 +1,5 @@
+command /repair:
+	permission: op
+	trigger:
+		set durability of player's tool to max durability of player's tool
+		send "&6Dein Werkzeug wurde repariert!" to player
