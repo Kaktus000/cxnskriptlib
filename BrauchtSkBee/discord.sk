@@ -3,6 +3,6 @@ function discord(player: player):
 	add hover event showing "Joine dem Discord" to {_t}
 	add click event to open url "https://discord.gg/DEINEDISCORDINVITE" to {_t}
 	send component {_t} to {_player}
-command /discord:
+command /rdiscord:
 	trigger:
 		discord(player)
