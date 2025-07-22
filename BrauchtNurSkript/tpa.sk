@@ -1,0 +1,35 @@
+command /tpa [<player>]:
+    permission: tpa
+    trigger:
+        if arg-1 is set:
+            set {tpa::%arg-1's uuid%} to player
+            send "&8[&aTPA&8]&6 TPA Gesendet" to player
+            send "&8[&aTPA&8]&6 %player's name% hat dir eine TPA gesendet akzeptiere mit /tpaccept" to arg-1
+            wait 20 seconds
+            if {tpa::%arg-1's uuid%} is player:
+                send "&8[&aTPA&8]&6 Die TPA von %player's name% ist abgelaufen." to arg-1
+                send "&8[&aTPA&8]&6 Die TPA an %arg-1's name% ist abgelaufen." to player
+                delete {tpa::%arg-1's uuid%}
+        else:
+            send "&8[&aTPA&8]&c Gib einen Spieler an." to player
+
+command /tpaccept:
+    permission: tpa
+    trigger:
+        if {tpa::%player's uuid%} is set:
+            send "&8[&aTPA&8]&6 Du wirst Teleportiert..." to {tpa::%player's uuid%}
+            send "&8[&aTPA&8]&6 %{tpa::%player's uuid%}'s name% wird Teleportiert..." to player
+            teleport {tpa::%player's uuid%} to player
+            delete {tpa::%player's uuid%}
+        else:
+            send "&8[&aTPA&8]&c Du hast keine TPA" to player
+
+command /tpacancel:
+    permission: tpa
+    trigger:
+        if {tpa::%player's uuid%} is set:
+            send "&8[&aTPA&8]&6 TPA abgelehnt" to player
+            send "&8[&aTPA&8]&c Deine TPA wurde von %player's name% abgelehnt." to {tpa::%player's uuid%}
+            delete {tpa::%player's uuid%}
+        else:
+            send "&8[&aTPA&8]&c Du hast keine TPA" to player
