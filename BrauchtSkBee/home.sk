@@ -1,0 +1,32 @@
+command /sethome [<text>]:
+	trigger:
+		set {home::%player's uuid%::%arg-1%} to player's location
+		send "&6Home gesezt" to player
+
+
+command /home [<text>]:
+	trigger:
+		if {home::%player's uuid%::%arg-1%} is set:
+			teleport player to {home::%player's uuid%::%arg-1%}
+			send "&6Teleportiert" to player
+				
+command /delhome [<text>]:
+	trigger:
+		if {home::%player's uuid%::%arg-1%} is set:
+			delete {home::%player's uuid%::%arg-1%}
+			send "&cHome Gelöscht" to player
+
+command /listhomes:
+	trigger:
+		send "&aDeine Homes" to player
+		loop {home::%player's uuid%::*}:
+			send "-%loop-index%" to player  
+
+on tab complete of "/home":
+	loop {home::%player's uuid%::*}:
+		add loop-index to {_tabcompletions::*}
+	set tab completions for position 1 to {_tabcompletions::*}
+on tab complete of "/delhome":
+	loop {home::%player's uuid%::*}:
+		add loop-index to {_tabcompletions::*}
+	set tab completions for position 1 to {_tabcompletions::*}
